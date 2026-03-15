@@ -1,0 +1,33 @@
+body {
+    width: 256px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding: 10px 10px;
+    
+    border: 1px solid black;
+}
+
+h1 {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+}
+
+h2 {
+    font-size: 1em;
+}
+
+form div {
+    margin: 0.5em 0 0;
+}
+
+.videos-num-block {
+    display: block;
+}
+
+.videos-num-input {
+    width: 3em;
+}
+
+
