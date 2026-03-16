@@ -5,10 +5,7 @@
     "version": "1.0.0",
     
     "icons": {
-        "32": ,
-        "64": ,
-        "128": ,
-        "256": 
+        
     },
     "action": {
         "default_popup": "main.html"
@@ -18,8 +15,6 @@
         "notifications",
         "storage",
         "scripting"
-    ],
-    "background": {
-        "service_worker": "scripts.js",
-    }
+    ]
+    
 }
