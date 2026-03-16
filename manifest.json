@@ -1,0 +1,25 @@
+{
+    "manifest_version": 3,
+    "name": "Youtube Controller",
+    "description": "An extention which allows you to block some content and finally focus. Or just block Youtube entirely",
+    "version": "1.0.0",
+    
+    "icons": {
+        "32": ,
+        "64": ,
+        "128": ,
+        "256": 
+    },
+    "action": {
+        "default_popup": "main.html"
+    },
+    "permissions": [
+        "tabs",
+        "notifications",
+        "storage",
+        "scripting"
+    ],
+    "background": {
+        "service_worker": "scripts.js",
+    }
+}
