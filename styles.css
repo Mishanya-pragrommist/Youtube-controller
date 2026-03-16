@@ -1,5 +1,5 @@
 body {
-    width: 256px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     height: auto;
@@ -7,6 +7,8 @@ body {
     
     border: 1px solid black;
     background-color: #b9ffbf;
+    
+    font-family: cursive;
 }
 
 h1 {
@@ -23,6 +25,14 @@ form div {
     margin: 0.5em 0 0;
 }
 
+.time-input-block {
+    display: none;
+}
+
+.custom-settings-section {
+    display: none;
+}
+
 .videos-num-block {
     display: block;
 }
@@ -31,4 +41,6 @@ form div {
     width: 3em;
 }
 
-
+input[type="checkbox"], input[type="radio"] {
+    transform: scale(1.5);
+}
