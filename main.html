@@ -9,42 +9,47 @@
 <body>
     <h1>YouTube Controller</h1>
     <p>Choose blocking mode</p>
-    <form>
+    <form form-block>
         <section>
             <div>
                 <input type="radio" 
                        name="preference"
-                       value="block-all-content" 
-                       checked>
+                       value="block-ytb-entirely" 
+                       checked
+                       block-ytb-entirely>
                 <label for="preference">Block YouTube entirely</label>
             </div>
 
             <div>
                 <input type="radio" 
                        name="preference"
-                       value="focus-mode">
+                       value="focus-mode"
+                       focus-mode>
                 <label for="preference">Focus mode</label>
             </div>
                 
             <!--Is invisible when focus mode is not checked-->
-            <div>
+            <div class="time-input-block">
                 <input class="time-input" 
                        type="time"
-                       value="00:00:00" step="1">
+                       value="00:00:00" 
+                       step="1"
+                       time-input>
                 <label for="time-input" class="time-input-label">Focus time</label>
             </div>
             
             <div>
                 <input type="radio" 
                        name="preference"
-                       value="custom-settings">
+                       value="custom-settings"
+                       custom-settings>
                 <label for="preference">Custom settings</label>
             </div>        
         </section>
         
-        <h2>Choose what exactly to block</h2>
-        
-        <section>
+        <section class="custom-settings-section">
+            <h2>Choose what exactly to block</h2>
+            
             <div>
                 <input type="checkbox" name="content-feed">
                 <label for="content-feed">Content feed</label>
@@ -61,7 +66,7 @@
                        name="videos-number"
                        value="0"
                        min="0">
-                <label for="videos-number">Number of videos to be shown</label>
+                <label for="videos-number">Videos num that can be shown</label>
             </div>
 
             <div>
@@ -93,6 +98,8 @@
             <button stop-btn>Stop blocking</button>
         </div>
     </form>
+    
+    <script src="scripts.js"></script>
 </body>
     
 </html>
