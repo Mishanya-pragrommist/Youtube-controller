@@ -8,13 +8,14 @@
     
 <body>
     <h1>YouTube Controller</h1>
-    <p>Choose all things you'd like to block</p>
+    <p>Choose blocking mode</p>
     <form>
         <section>
             <div>
                 <input type="radio" 
                        name="preference"
-                       value="block-all-content" checked>
+                       value="block-all-content" 
+                       checked>
                 <label for="preference">Block YouTube entirely</label>
             </div>
 
@@ -30,7 +31,7 @@
                 <input class="time-input" 
                        type="time"
                        value="00:00:00" step="1">
-                <label for="time-input" class="time-input-label">Working time (optinonally)</label>
+                <label for="time-input" class="time-input-label">Focus time</label>
             </div>
             
             <div>
@@ -41,44 +42,55 @@
             </div>        
         </section>
         
-        <h2>Here you can choose what exact content to block</h2>
-        <div>
-            <input type="checkbox" name="content-feed">
-            <label for="content-feed">Content feed</label>
-        </div>
+        <h2>Choose what exactly to block</h2>
         
-        <div class="videos-num-block">
-            <input class="videos-num-input" 
-                   type="number"
-                   name="videos-number"
-                   value="0"
-                   min="0">
-            <label for="videos-number">Number of videos to be shown</label>
-        </div>
-        
-        <div>
-            <input type="checkbox" name="recommendations">
-            <label for="recommendations">Recommendations</label>
-        </div>
-        
-        <div>
-            <input name="left-panel" 
-                   type="checkbox">
-            <label for="left-panel">Left panel</label>
-        </div>
-        
-        <div>
-            <input name="notifications" 
-                   type="checkbox">
-            <label for="notifications">Notifications</label>
-        </div>
-        
+        <section>
+            <div>
+                <input type="checkbox" name="content-feed">
+                <label for="content-feed">Content feed</label>
+            </div>
+            
+            <div>
+                <input type="checkbox" name="shorts">
+                <label for="shorts">YouTube Shorts</label>
+            </div>
+
+            <div class="videos-num-block">
+                <input class="videos-num-input" 
+                       type="number"
+                       name="videos-number"
+                       value="0"
+                       min="0">
+                <label for="videos-number">Number of videos to be shown</label>
+            </div>
+
+            <div>
+                <input type="checkbox" name="recommendations">
+                <label for="recommendations">Recommendations</label>
+            </div>
+
+            <div>
+                <input name="left-panel" 
+                       type="checkbox">
+                <label for="left-panel">Left panel</label>
+            </div>
+
+            <div>
+                <input name="notifications" 
+                       type="checkbox">
+                <label for="notifications">Notifications</label>
+            </div>
+
+            <div>
+                <button>Reset settings</button>
+            </div>
+        </section>
         
         
         <div class="buttons-row">
-            <button>Block it</button>
-            <button>Start working</button>
-            <button>Stop blocking</button>
+            <button type="submit" block-btn>Block it</button>
+            <button type="submit" focus-btn>Start working</button>
+            <button stop-btn>Stop blocking</button>
         </div>
     </form>
 </body>
