@@ -10,27 +10,31 @@
     <h1>YouTube Controller</h1>
     <p>Choose blocking mode</p>
     <form form-block>
-        <section>
+        <section radiobuttons>
             <div>
                 <input type="radio" 
                        name="preference"
+                       id="option1"
                        value="block-ytb-entirely" 
                        checked
                        block-ytb-entirely>
-                <label for="preference">Block YouTube entirely</label>
+                <label for="option1">Block YouTube entirely</label>
             </div>
 
             <div>
                 <input type="radio" 
                        name="preference"
+                       id="option2"
                        value="focus-mode"
                        focus-mode>
-                <label for="preference">Focus mode</label>
+                <label for="option2">Focus mode</label>
             </div>
                 
             <!--Is invisible when focus mode is not checked-->
-            <div class="time-input-block">
-                <input class="time-input" 
+            <div class="time-input-block"
+                 time-input-block>
+                <input id="time-input"
+                       class="time-input" 
                        type="time"
                        value="00:00:00" 
                        step="1"
@@ -41,53 +45,56 @@
             <div>
                 <input type="radio" 
                        name="preference"
+                       id="option3"
                        value="custom-settings"
                        custom-settings>
-                <label for="preference">Custom settings</label>
+                <label for="option3">Custom settings (will be implemented later)</label>
             </div>        
         </section>
         
-        <section class="custom-settings-section">
+        <section class="custom-settings-section"
+                 custom-settings-section>
             <h2>Choose what exactly to block</h2>
             
             <div>
-                <input type="checkbox" name="content-feed">
+                <input type="checkbox" id="content-feed">
                 <label for="content-feed">Content feed</label>
             </div>
             
             <div>
-                <input type="checkbox" name="shorts">
+                <input type="checkbox" id="shorts">
                 <label for="shorts">YouTube Shorts</label>
             </div>
 
             <div class="videos-num-block">
                 <input class="videos-num-input" 
                        type="number"
-                       name="videos-number"
+                       id="videos-number"
                        value="0"
                        min="0">
                 <label for="videos-number">Videos num that can be shown</label>
             </div>
 
             <div>
-                <input type="checkbox" name="recommendations">
+                <input type="checkbox" 
+                       id="recommendations">
                 <label for="recommendations">Recommendations</label>
             </div>
 
             <div>
-                <input name="left-panel" 
+                <input id="left-panel" 
                        type="checkbox">
                 <label for="left-panel">Left panel</label>
             </div>
 
             <div>
-                <input name="notifications" 
+                <input id="notifications" 
                        type="checkbox">
                 <label for="notifications">Notifications</label>
             </div>
 
             <div>
-                <button>Reset settings</button>
+                <button reset-btn>Reset settings</button>
             </div>
         </section>
         
