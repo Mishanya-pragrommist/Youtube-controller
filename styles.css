@@ -9,6 +9,7 @@ body {
     background-color: #b9ffbf;
     
     font-family: cursive;
+    font-size: 1.2em;
 }
 
 h1 {
@@ -39,4 +40,18 @@ form div {
 
 input[type="checkbox"], input[type="radio"] {
     transform: scale(1.5);
+}
+
+.buttons-row {
+    width: 90%;
+    margin: auto;
+    margin-top: 0.5em;
+    display: flex;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.buttons-row button {
+    width: 40%;
+    height: 1.5em;
 }
