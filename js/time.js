@@ -1,9 +1,9 @@
 //Represents time in "hh:mm:ss" format
 export class Time {
     constructor(hours, minutes, seconds) { 
-        this.hours = (hours !== undefined ? hours : 0);
-        this.minutes = (minutes !== undefined ? minutes : 0);
-        this.seconds = (seconds !== undefined ? seconds : 0);
+        this.seconds = seconds || 0;
+        this.minutes = minutes || 0;
+        this.hours = hours || 0;
     }
     
     // Set seconds, minutes and hours separately
@@ -12,14 +12,7 @@ export class Time {
         this.minutes = minutes || 0;
         this.hours = hours || 0;
     }
-    
-    // Set time using Time object
-    setTime(time) {
-        this.seconds = time.seconds;
-        this.minutes = time.minutes;
-        this.hours = time.hours;
-    }
-    
+
     // Set all values to 0
     reset() {
         this.seconds = 0;
@@ -60,7 +53,7 @@ export class Time {
         // If not enough time, throw an error
         if (this.toSeconds() < 
             (seconds + minutes * 60 + hours * 3600)) {
-            throw new RangeError("Недостаточно времени для снятия");
+            throw new RangeError("Not enough time to substract");
         }
         
         this.seconds -= seconds;
@@ -82,14 +75,6 @@ export class Time {
         if (hours !== undefined && hours > 0)  this.hours -= hours;
     }
     
-    // Substract time using Time object
-    substractTime(time) {
-        this.substract(time.seconds, time.minutes, time.hours);
-    }
-     
-    // Round time to minutes in smaller side
-    floor() { this.seconds = 0; }
-    
     // Increase time by 1 second
     up() {
         this.seconds++;
@@ -108,7 +93,7 @@ export class Time {
         if (this.hours <= 0 &&
             this.minutes <= 0 &&
             this.seconds <= 0) {
-            throw new RangeError("Time.down(): Недостаточно времени");
+            throw new RangeError("Time.down(): Not enough time");
         }
         this.seconds--;
         if (this.seconds < 0) {
@@ -121,9 +106,8 @@ export class Time {
         }
     }
     
-    // Return time in seconds
-    toSeconds() {
-        return this.seconds + this.minutes * 60 + this.hours * 3600;
+    hasTime() {
+        return this.hours > 0 && this.minutes > 0 && this.seconds > 0;
     }
     
     // Format time in "hh:mm:ss" format

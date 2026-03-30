@@ -1,6 +1,11 @@
+import { Time } from "./time.js";
+
 // ========================================================
 // DOM-elements
 // ========================================================
+
+// Text "Choose blocking mode" and "Enjoy it!"
+const instructionText = document.querySelector("[instruction-text-js]");
 
 const form = document.querySelector("[form-js]");
 
@@ -20,6 +25,9 @@ const timeInputBlock = document.querySelector("[time-input-block]");
 const timeInput = document.querySelector("[time-input]");
 const customSettingsSection = document.querySelector("[custom-settings-section]");
 
+// Timer block
+const timer = document.querySelector("[timer-js]");
+
 // ========================================================
 // Initialisation
 // ========================================================
@@ -30,6 +38,9 @@ const customSettingsSection = document.querySelector("[custom-settings-section]"
 // Hide stuff
 timeInputBlock.style.display = "block";
 stopBtn.style.display = "none";
+timer.style.display = "none";
+
+const time = new Time();
 
 // ========================================================
 // Event listeners
@@ -50,14 +61,19 @@ optionsBlock.addEventListener("change", (event) => {
 
 startBtn.addEventListener("click", (event) => {
     event.preventDefault();
-    const formData = new FormData(form);
-    const option = formData.get("preference");
     
-    // Get hours, minutes and seconds
+    // Getting data
+    
+    const formData = new FormData(form);
+    const option = formData.get("preference"); // Radio button value
+    
+    // Get hours, minutes and seconds from time input
     const timeParts = formData.get("time-input").split(":");
-    const hours = timeParts[0];
-    const minutes = timeParts[1];
-    const seconds = timeParts[2];
+    let hours = timeParts[0];
+    let minutes = timeParts[1];
+    let seconds = timeParts[2];
+    
+    time.set(seconds, minutes, seconds);
     
     // Hide start btn and show stop btn
     stopBtn.style.display = "block";
@@ -66,14 +82,29 @@ startBtn.addEventListener("click", (event) => {
     // Hide options and show timer
     optionsBlock.style.display = "none";
     
-    console.log("blockBtn worked. option: ", option, "; time: ", timeParts);
+    // Set time in timer block
+    timer.style.display = time.hasTime() ? "block" : "none";
+    
+    // Changing text right under header
+    const optionText = (option === "block-ytb-entirely" ? 
+          "blocking Yt entirely" : "focus mode") + "!";
+    instructionText.textContent = "Enjoy " + optionText;
+    
+    timer.textContent = time.toString();
+    
+    // For debugging
+    console.log("blockBtn worked. option: ", option, "; time: ", time.toString());
 });
 
 stopBtn.addEventListener("click", (event) => {
     event.preventDefault();
     
-    // Showing options again
+    // Show options again and hide timer
     optionsBlock.style.display = "flex";
+    timer.style.display = "none";
+    
+    // Changing text right after header
+    instructionText.textContent = "Choose blocking mode";
     
     // Hide stop btn and show start btn
     stopBtn.style.display = "none";
