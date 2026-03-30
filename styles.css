@@ -93,13 +93,13 @@ input[type="time"] {
 }
 
 .buttons-row button {
-    width: 40%;
+    width: auto;
     height: 1.5em;
-}
-
-.start-btn, .stop-btn {
-    color: white;
+    
+    padding: 0 1em;
+    
     font-size: 1em;
+    color: white;
 }
 
 .start-btn {

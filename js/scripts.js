@@ -5,9 +5,9 @@
 const form = document.querySelector("[form-js]");
 
 // Radiobuttons
-const radioButtonsBlock = document.querySelector("[options-block]");
-const blockRadio = radioButtonsBlock.querySelector("[block-ytb-entirely]");
-const focusRadio = radioButtonsBlock.querySelector("[focus-mode]");
+const optionsBlock = document.querySelector("[options-block]");
+const blockRadio = optionsBlock.querySelector("[block-ytb-entirely]");
+const focusRadio = optionsBlock.querySelector("[focus-mode]");
 //const customSettingsCheckbox = radioButtonsBlock.querySelector("[custom-settings]");
 
 // Buttons
@@ -35,7 +35,7 @@ stopBtn.style.display = "none";
 // Event listeners
 // ========================================================
 
-radioButtonsBlock.addEventListener("change", (event) => {
+optionsBlock.addEventListener("change", (event) => {
     const option = event.target.value;
     console.log("option: ", option);
     
@@ -64,13 +64,16 @@ startBtn.addEventListener("click", (event) => {
     startBtn.style.display = "none";
     
     // Hide options and show timer
-    form.disabled = "true";
+    optionsBlock.style.display = "none";
     
     console.log("blockBtn worked. option: ", option, "; time: ", timeParts);
 });
 
 stopBtn.addEventListener("click", (event) => {
     event.preventDefault();
+    
+    // Showing options again
+    optionsBlock.style.display = "flex";
     
     // Hide stop btn and show start btn
     stopBtn.style.display = "none";
