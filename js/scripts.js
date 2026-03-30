@@ -2,13 +2,13 @@
 // DOM-elements
 // ========================================================
 
-const form = document.querySelector("[form-block]");
+const form = document.querySelector("[form-js]");
 
 // Radiobuttons
-const radioButtonsBlock = document.querySelector("[radiobuttons]");
+const radioButtonsBlock = document.querySelector("[options-block]");
 const blockRadio = radioButtonsBlock.querySelector("[block-ytb-entirely]");
 const focusRadio = radioButtonsBlock.querySelector("[focus-mode]");
-const customSettingsCheckbox = radioButtonsBlock.querySelector("[custom-settings]");
+//const customSettingsCheckbox = radioButtonsBlock.querySelector("[custom-settings]");
 
 // Buttons
 const startBtn = document.querySelector("[start-btn]");
@@ -29,12 +29,11 @@ const customSettingsSection = document.querySelector("[custom-settings-section]"
 
 // Hide stuff
 timeInputBlock.style.display = "block";
-customSettingsSection.style.display = "none"; // Will be implemented later
+stopBtn.style.display = "none";
 
 // ========================================================
 // Event listeners
 // ========================================================
-
 
 radioButtonsBlock.addEventListener("change", (event) => {
     const option = event.target.value;
@@ -49,12 +48,6 @@ radioButtonsBlock.addEventListener("change", (event) => {
     //
 });
 
-
-// TODO: create eventListeners for:
-//      Start;
-//      Stop.
-    
-
 startBtn.addEventListener("click", (event) => {
     event.preventDefault();
     const formData = new FormData(form);
@@ -66,7 +59,20 @@ startBtn.addEventListener("click", (event) => {
     const minutes = timeParts[1];
     const seconds = timeParts[2];
     
+    // Hide start btn and show stop btn
+    stopBtn.style.display = "block";
+    startBtn.style.display = "none";
+    
+    // Hide options and show timer
+    form.disabled = "true";
+    
     console.log("blockBtn worked. option: ", option, "; time: ", timeParts);
 });
 
-
+stopBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+    
+    // Hide stop btn and show start btn
+    stopBtn.style.display = "none";
+    startBtn.style.display = "block";
+});

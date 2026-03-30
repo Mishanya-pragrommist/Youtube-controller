@@ -3,34 +3,45 @@
 <html lang="en">
 <head>
     <title>YouTube controller extention</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
     
 <body>
     <h1>YouTube Controller</h1>
     <p>Choose blocking mode</p>
-    <form form-block>
-        <section radiobuttons>
-            <div>
-                <input type="radio" 
-                       name="preference"
-                       id="option1"
-                       value="block-ytb-entirely" 
-                       checked
-                       block-ytb-entirely>
-                <label for="option1">Block YouTube entirely</label>
+    
+    <form form-js>
+        <section options-block>
+            <div class="option-row">
+                <div class="radio-btn-block">
+                    <input type="radio" 
+                           name="preference"
+                           id="option1"
+                           value="block-ytb-entirely" 
+                           checked
+                           block-ytb-entirely>
+                    <label for="option1">Block YouTube entirely</label>
+                </div>
+                <!-- TODO: implement showing info when hovering "INFO" -->
+                <!-- <p class="info">info</p> -->
             </div>
 
-            <div>
-                <input type="radio" 
-                       name="preference"
-                       id="option2"
-                       value="focus-mode"
-                       focus-mode>
-                <label for="option2">Focus mode</label>
+            <div class="option-row">
+                <div class="radio-btn-block">
+                    <input type="radio" 
+                           name="preference"
+                           id="option2"
+                           value="focus-mode"
+                           focus-mode>
+                    <label for="option2">Focus mode</label>
+                </div>
+                <!-- 
+                <p class="info">info</p>
+                <p class="info">Block all Youtube functions 
+                    so you can't doom scroll</p> -->
             </div>
             
-            <div class="time-input-block"
+            <div class="time-input-block option-row"
                  time-input-block>
                 <input id="time-input"
                        class="time-input"
@@ -42,7 +53,7 @@
                 <label for="time-input" class="time-input-label">Blocking/focus time (if 0:0:0, then until you press 'stop')</label>
             </div>
             
-            <!--TODO: implement custom settings-->
+        <!-- TODO: implement custom settings -->
             <!--<div>
                 <input type="checkbox" 
                        name="preference"
@@ -52,7 +63,8 @@
                 <label for="option3">Custom settings</label>
             </div>-->        
         </section>
-        
+    
+        <!--
         <section class="custom-settings-section"
                  custom-settings-section>
             <h2>Choose what exactly to block</h2>
@@ -99,16 +111,17 @@
             </div>
         </section>
         
-        
+        -->
         <div class="buttons-row">
-            <button type="submit" 
+            <button class="start-btn"
+                    type="submit" 
                     value="block"
                     start-btn>Start</button>
-            <button stop-btn>Stop</button>
+            <button class="stop-btn" stop-btn>Stop</button>
         </div>
     </form>
     
-    <script src="scripts.js"></script>
+    <script src="js/scripts.js"></script>
 </body>
     
 </html>
