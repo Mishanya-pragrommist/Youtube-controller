@@ -109,3 +109,23 @@ input[type="time"] {
 .stop-btn {
     background-color: red;
 }
+
+.timer {
+    display: none;
+    width: 90%;
+    height: 150px;
+    
+    background-color: #FFF67E;
+    border-radius: 800px;
+    border: 2px solid black;
+    
+    font-size: 70px;
+    text-align: center;
+    align-content: center;
+    
+}
+
+.timer::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
