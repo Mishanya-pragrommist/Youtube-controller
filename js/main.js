@@ -35,13 +35,15 @@ const timer = document.querySelector("[timer-js]");
 const time = new Stuff.Time();
 let option;
 
-function updateData() {
-    const data = Stuff.getData();
-    console.log("Typeof data.time: ", typeof data.time);
-    console.log("Typeof data.seconds: ", typeof data.seconds);
-    console.log("Typeof data.option: ", typeof data.option);
-    time.setTime(data.time);
-    option = data.option;
+async function updateData() {
+    try {
+        const data = await Stuff.getData();
+        time.setTime(data.time);
+        option = data.option;
+    } 
+    catch (error) {
+        console.error("Error while updating data:", error);
+    }
 }
 
 // ========================================================
@@ -115,7 +117,7 @@ startBtn.addEventListener("click", (event) => {
 });
 
 
-stopBtn.addEventListener("click", (event) => {
+stopBtn.addEventListener("click", async (event) => {
     event.preventDefault();
     
     // Get data from background script

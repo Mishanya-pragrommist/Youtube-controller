@@ -21,14 +21,18 @@
         "type": "module"
     },
     "content_scripts": [
-    {
-        "js": [
-            "js/content-script.js"
-        ],
-        "matches": [
-            "https://www.youtube.com/*"
-        ],
-        "type": "module"
-    }
-  ]
+        {
+            "js": ["js/content-wrapper.js"], 
+            "matches": ["https://www.youtube.com/*"]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "content-script.js", 
+                "useful-stuff.js"
+            ],
+            "matches": ["https://www.youtube.com/*"]
+        }
+    ]
 }

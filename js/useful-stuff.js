@@ -75,22 +75,27 @@ const FOCUS_MODE_OPTION = "focus-mode";
 
 // Get data from background script
 export function getData() {
-    let data = {};
-    chrome.runtime.sendMessage({ action: "GET_DATA" }, (response) => {
-        if (response) {
-            console.log("Background data is gotten:", response);
-            data = {
-                seconds: response.seconds,
-                time: new Time(response.hours, 
-                               response.minutes, 
-                               response.seconds),
-                option: response.option === 1 ? BLOCK_YT_OPTION : FOCUS_MODE_OPTION
-            };
-        }
-        else throw Error("Unable to get data from background");
+    return new Promise((resolve, reject) => {
+        chrome.runtime.sendMessage({ action: "GET_DATA" }, (response) => {
+            if (chrome.runtime.lastError) {
+                return reject(chrome.runtime.lastError);
+            }
+            if (response) {
+                console.log("Background data is gotten:", response);
+                const data = {
+                    seconds: response.seconds,
+                    time: new Time(response.hours, 
+                                   response.minutes, 
+                                   response.seconds),
+                    // Исправлено: response.choice вместо response.option
+                    option: response.choice === 1 ? BLOCK_YT_OPTION : FOCUS_MODE_OPTION 
+                };
+                resolve(data);
+            } else {
+                reject(new Error("Unable to get data from background"));
+            }
+        });
     });
-    
-    return data;
 }
 
 // Send data to background script
@@ -105,7 +110,7 @@ export function sendData(time, option) {
             seconds: time.seconds,
             minutes: time.minutes,
             hours: time.hours,
-            choice: option === "block-ytb-entirely" ? 1 : 2
+            option: option === "block-ytb-entirely" ? 1 : 2
         }
     };
     
