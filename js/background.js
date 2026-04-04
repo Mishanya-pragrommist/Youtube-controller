@@ -1,4 +1,4 @@
-import { Time } from "./time.js";
+import { Time } from "./useful-stuff.js";
 
 // Initialization
 

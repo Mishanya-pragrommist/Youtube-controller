@@ -1,4 +1,4 @@
-import { Time } from "./time.js";
+import * as Stuff from "./useful-stuff.js";
 
 // ========================================================
 // DOM-elements
@@ -32,57 +32,23 @@ const customSettingsSection = document.querySelector("[custom-settings-section]"
 // Timer block
 const timer = document.querySelector("[timer-js]");
 
-const time = new Time();
+const time = new Stuff.Time();
 let option;
 
-// ========================================================
-// Useful functions
-// ========================================================
-
-// Get data from background script
-function getData() {
-    chrome.runtime.sendMessage({ action: "GET_DATA" }, (response) => {
-        if (response) {
-            console.log("Background data is gotten:", response);
-            time.set(response.seconds, response.minutes, response.hours);
-            option = response.option;
-        }
-    });    
+function updateData() {
+    const data = Stuff.getData();
+    console.log("Typeof data.time: ", typeof data.time);
+    console.log("Typeof data.seconds: ", typeof data.seconds);
+    console.log("Typeof data.option: ", typeof data.option);
+    time.setTime(data.time);
+    option = data.option;
 }
-
-// Send data to background script
-function sendDataToBackground(time, option) {
-    
-    console.log("starting sendDataToBackground()");
-    
-    // Pack data into object with numbers
-    const dataToSend = {
-        action: "UPDATE_DATA", // Command for background
-        payload: {
-            seconds: time.seconds,
-            minutes: time.minutes,
-            hours: time.hours,
-            choice: option === "block-ytb-entirely" ? 1 : 2
-        }
-    };
-    
-    // Send data
-    chrome.runtime.sendMessage(dataToSend, (response) => {
-        if (chrome.runtime.lastError) {
-            console.warn("Background script is sleeping or killed: ", chrome.runtime.lastError.message);
-            return;
-        }
-        console.log("Background responded: ", response.status);
-    });
-    console.log("sendDataToBackground() worked");
-}
-
 
 // ========================================================
 // Initialisation
 // ========================================================
 
-// TODO: create reading data from localStorage
+// TODO: create reading data from background
 // instead of just hiding elements
 // so when the extension is closed and the page is reloaded,
 // it would still block content
@@ -94,7 +60,7 @@ stopBtn.style.display = "none";
 timer.style.display = "none";
 
 // Getting initial data from background script
-getData();
+updateData();
 
 // ========================================================
 // Event listeners
@@ -145,7 +111,7 @@ startBtn.addEventListener("click", (event) => {
     instructionText.textContent = "Enjoy " + optionText;
     
     // Synchronizing data with background
-    sendDataToBackground(time, option);
+    Stuff.sendData(time, option);
 });
 
 
@@ -153,8 +119,8 @@ stopBtn.addEventListener("click", (event) => {
     event.preventDefault();
     
     // Get data from background script
-    getData();
-
+    updateData();
+    
     // Show options again and hide timer
     optionsBlock.style.display = "flex";
     timer.style.display = "none";
@@ -171,8 +137,8 @@ stopBtn.addEventListener("click", (event) => {
 });
 
 resetBtn.addEventListener("click", (event) => {
-    
     time.reset();
     timer.textContent = "00:00:00";
     option = "block-ytb-entirely";
+    Stuff.sendData(time, option);
 });

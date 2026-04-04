@@ -19,5 +19,16 @@
     "background": {
         "service_worker": "js/background.js",
         "type": "module"
+    },
+    "content_scripts": [
+    {
+        "js": [
+            "js/content-script.js"
+        ],
+        "matches": [
+            "https://www.youtube.com/*"
+        ],
+        "type": "module"
     }
+  ]
 }
