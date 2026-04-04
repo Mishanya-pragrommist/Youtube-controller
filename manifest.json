@@ -15,6 +15,9 @@
         "notifications",
         "storage",
         "scripting"
-    ]
-    
+    ],
+    "background": {
+        "service_worker": "js/background.js",
+        "type": "module"
+    }
 }

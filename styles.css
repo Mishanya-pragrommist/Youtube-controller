@@ -92,7 +92,7 @@ input[type="time"] {
     gap: 10px;
 }
 
-.buttons-row button {
+button {
     width: auto;
     height: 1.5em;
     
@@ -102,12 +102,20 @@ input[type="time"] {
     color: white;
 }
 
+button:hover {
+    box-shadow: 0 0 8px grey;
+}
+
 .start-btn {
     background-color: #0aaa0a;
 }
 
 .stop-btn {
     background-color: red;
+}
+
+.reset-btn {
+    background-color: grey;
 }
 
 .timer {
