@@ -62,7 +62,24 @@ stopBtn.style.display = "none";
 timer.style.display = "none";
 
 // Getting initial data from background script
-updateData();
+//updateData();
+
+ async function getCurrentTab() {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    // `tab` will either be a `tabs.Tab` instance or `undefined`.
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+  }
+
+getCurrentTab().then((tab) => {
+    console.log("You are currently on ", tab.url);
+    console.log("Title: ", tab.title);
+    
+    const urlObj = new URL(tab.url);
+    const domain = urlObj.hostname;
+    console.log("Domain:", domain);
+});
+
 
 // ========================================================
 // Event listeners
