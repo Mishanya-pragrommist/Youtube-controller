@@ -1,176 +1,126 @@
 import * as Stuff from "./useful-stuff.js";
 
 // ========================================================
+// Constants and options
+// ========================================================
+const YT_DOMAIN = "www.youtube.com";
+const OPTIONS = {
+    BLOCK: "block-ytb-entirely",
+    FOCUS: "focus-mode"
+};
+
+// ========================================================
 // DOM-elements
 // ========================================================
+const elements = {
+    warningText: document.querySelector("[warning]"),
+    mainBlock: document.querySelector("[main-block]"),
+    instructionText: document.querySelector("[instruction-text-js]"),
+    form: document.querySelector("[form-js]"),
+    optionsBlock: document.querySelector("[options-block]"),
+    timeInput: document.querySelector("[time-input]"),
+    timer: document.querySelector("[timer-js]"),
+    // Кнопки
+    startBtn: document.querySelector("[start-btn]"),
+    stopBtn: document.querySelector("[stop-btn]"),
+    resetBtn: document.querySelector("[reset-btn]"),
+    // Контейнеры
+    timeInputBlock: document.querySelector("[time-input-block]")
+};
 
-const BLOCK_YT_OPTION = "block-ytb-entirely";
-const FOCUS_MODE_OPTION = "focus-mode";
+let currentState = {
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    option: OPTIONS.BLOCK
+};
 
-// Text "You are not on Youtube, bro. I can't block"
-const warningText = document.querySelector("[warning]");
-const mainBlock = document.querySelector("[main-block]");
+// ========================================================
+// Initialization
+// ========================================================
 
-// Text "Choose blocking mode" and "Enjoy it!"
-const instructionText = document.querySelector("[instruction-text-js]");
+async function init() {
+    const tab = await getCurrentTab();
+    const isYoutube = new URL(tab.url).hostname === YT_DOMAIN;
 
-// The form itself
-const form = document.querySelector("[form-js]");
-
-// Radiobuttons
-const optionsBlock = document.querySelector("[options-block]");
-const blockRadio = optionsBlock.querySelector("[block-ytb-entirely]");
-const focusRadio = optionsBlock.querySelector("[focus-mode]");
-//const customSettingsCheckbox = radioButtonsBlock.querySelector("[custom-settings]");
-
-// Buttons
-const startBtn = document.querySelector("[start-btn]");
-const stopBtn = document.querySelector("[stop-btn]");
-const resetBtn = document.querySelector("[reset-btn]");
-
-// Inputs and sections
-const timeInputBlock = document.querySelector("[time-input-block]");
-const timeInput = document.querySelector("[time-input]");
-const customSettingsSection = document.querySelector("[custom-settings-section]");
-
-// Timer block
-const timer = document.querySelector("[timer-js]");
-
-const time = new Stuff.Time();
-let option;
-
-async function updateData() {
-    try {
-        const data = await Stuff.getData();
-        time.setTime(data.time);
-        option = data.option;
-    } 
-    catch (error) {
-        console.error("Error while updating data:", error);
+    toggleYoutubeWarning(isYoutube);
+    
+    if (isYoutube) {
+        setupInitialUI();
     }
 }
 
+function setupInitialUI() {
+    elements.stopBtn.style.display = "none";
+    elements.timer.style.display = "none";
+    elements.startBtn.style.display = "block";
+    elements.resetBtn.style.display = "block";
+}
+
 // ========================================================
-// Initialisation
+// Useful functions
 // ========================================================
 
-// TODO: create reading data from content-script
-// instead of just hiding elements
-// so when the extension is closed and the page is reloaded,
-// it would still block content
-
-// Hide stuff
-timeInputBlock.style.display = "block";
-resetBtn.style.display = "block";
-stopBtn.style.display = "none";
-timer.style.display = "none";
-
-// Getting initial data from background script
-//updateData();
-
- async function getCurrentTab() {
-    let queryOptions = { active: true, lastFocusedWindow: true };
-    // `tab` will either be a `tabs.Tab` instance or `undefined`.
-    let [tab] = await chrome.tabs.query(queryOptions);
+async function getCurrentTab() {
+    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
     return tab;
-  }
+}
 
-getCurrentTab().then((tab) => {
-    // Get domain name like "www.youtube.com"
-    const urlObj = new URL(tab.url);
-    const domain = urlObj.hostname;
-    console.log("Domain:", domain);
-    
-    // Hide form if current domain is not Youtube,
-    // otherwise show it
-    if (domain !== "www.youtube.com") {
-        warningText.style.display = "block";
-        mainBlock.style.display = "none";
-    }
-    else {
-        warningText.style.display = "none";
-        mainBlock.style.display = "block";
-    }
-});
+function toggleYoutubeWarning(isOnYoutube) {
+    elements.warningText.style.display = isOnYoutube ? "none" : "block";
+    elements.mainBlock.style.display = isOnYoutube ? "block" : "none";
+}
 
+// Switches visibility of setting form and workmode
+// Переключает видимость между режимом настройки 
+// и режимом работы таймера
+function toggleWorkMode(isWorking) {
+    elements.stopBtn.style.display = isWorking ? "block" : "none";
+    elements.startBtn.style.display = isWorking ? "none" : "block";
+    elements.resetBtn.style.display = isWorking ? "none" : "block";
+    elements.optionsBlock.style.display = isWorking ? "none" : "flex";
+}
 
 // ========================================================
-// Event listeners
+// EventListeners
 // ========================================================
 
-// For now, it's just for debugging
-// In future, it will show custom settings
-// if user chooses it
-optionsBlock.addEventListener("change", (event) => {
-    const option = event.target.value;
-    console.log("option: ", option);
-});
+elements.startBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(elements.form);
+    const [h, m, s] = formData.get("time-input").split(":").map(Number);
+    const selectedOption = formData.get("preference");
 
-// Handling Start button click
-startBtn.addEventListener("click", (event) => {
-    event.preventDefault();
-    
-    const formData = new FormData(form);
-    option = formData.get("preference"); // Radio button value
-    
-    // Get hours, minutes and seconds from time input
-    const timeParts = formData.get("time-input").split(":");
-    const hours = timeParts[0];
-    const minutes = timeParts[1];
-    const seconds = timeParts[2];
-    
-    // Setting time (all undefined values will be 0)
-    time.set(seconds, minutes, hours);
-    
-    // Hide Start and Reset btn, show Stop btn
-    stopBtn.style.display = "block";
-    startBtn.style.display = "none";
-    resetBtn.style.display = "none";
-    
-    // Hide options and show timer
-    optionsBlock.style.display = "none";
-    
-    if (time.hasTime()) {
-        timer.style.display = "block";
-        timer.textContent = time.toString(); // Set time in timer block
+    currentState = { hours: h || 0, minutes: m || 0, seconds: s || 0, option: selectedOption };
+
+    // Обновляем текст инструкции
+    const modeName = selectedOption === OPTIONS.BLOCK ? "blocking Yt entirely" : "focus mode";
+    elements.instructionText.textContent = `Enjoy ${modeName}!`;
+
+    // Показываем таймер, если время задано
+    if (currentState.hours || currentState.minutes || currentState.seconds) {
+        elements.timer.textContent = `${h}:${m}:${s}`;
+        elements.timer.style.display = "block";
     }
-    else timer.style.display = "none";
-    
-    
-    // Changing text right under header
-    const optionText = (option === BLOCK_YT_OPTION ? 
-          "blocking Yt entirely" : "focus mode") + "!";
-    instructionText.textContent = "Enjoy " + optionText;
-    
-    // Synchronizing data with background
-    Stuff.sendData(time, option);
+
+    toggleWorkMode(true);
+    // Stuff.sendData(currentState);
 });
 
-
-stopBtn.addEventListener("click", async (event) => {
-    event.preventDefault();
+elements.stopBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     
-    // Get data from background script
-    updateData();
-    
-    // Show options again and hide timer
-    optionsBlock.style.display = "flex";
-    timer.style.display = "none";
-    
-    // Changing text under header
-    instructionText.textContent = "Choose blocking mode";
-    
-    // Hide stop btn and show start btn
-    stopBtn.style.display = "none";
-    startBtn.style.display = "block";
-    resetBtn.style.display = "block";
-    
-    timeInput.value = time.toString();
+    toggleWorkMode(false);
+    elements.timer.style.display = "none";
+    elements.instructionText.textContent = "Choose blocking mode";
 });
 
-resetBtn.addEventListener("click", (event) => {
-    time.reset();
-    timer.textContent = "00:00:00";
-    option = BLOCK_YT_OPTION;
-    Stuff.sendData(time, option);
+elements.resetBtn.addEventListener("click", () => {
+    elements.form.reset();
+    elements.timer.textContent = "00:00:00";
+    // Stuff.sendData(null);
 });
+
+// Запуск
+init();
