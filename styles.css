@@ -17,6 +17,10 @@ body {
     font-size: 1.2em;
 }
 
+.warning {
+    display: none;
+}
+
 h1 {
     width: 100%;
     text-align: center;

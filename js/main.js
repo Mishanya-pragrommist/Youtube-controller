@@ -7,6 +7,10 @@ import * as Stuff from "./useful-stuff.js";
 const BLOCK_YT_OPTION = "block-ytb-entirely";
 const FOCUS_MODE_OPTION = "focus-mode";
 
+// Text "You are not on Youtube, bro. I can't block"
+const warningText = document.querySelector("[warning]");
+const mainBlock = document.querySelector("[main-block]");
+
 // Text "Choose blocking mode" and "Enjoy it!"
 const instructionText = document.querySelector("[instruction-text-js]");
 
@@ -50,7 +54,7 @@ async function updateData() {
 // Initialisation
 // ========================================================
 
-// TODO: create reading data from background
+// TODO: create reading data from content-script
 // instead of just hiding elements
 // so when the extension is closed and the page is reloaded,
 // it would still block content
@@ -72,12 +76,21 @@ timer.style.display = "none";
   }
 
 getCurrentTab().then((tab) => {
-    console.log("You are currently on ", tab.url);
-    console.log("Title: ", tab.title);
-    
+    // Get domain name like "www.youtube.com"
     const urlObj = new URL(tab.url);
     const domain = urlObj.hostname;
     console.log("Domain:", domain);
+    
+    // Hide form if current domain is not Youtube,
+    // otherwise show it
+    if (domain !== "www.youtube.com") {
+        warningText.style.display = "block";
+        mainBlock.style.display = "none";
+    }
+    else {
+        warningText.style.display = "none";
+        mainBlock.style.display = "block";
+    }
 });
 
 
@@ -125,7 +138,7 @@ startBtn.addEventListener("click", (event) => {
     
     
     // Changing text right under header
-    const optionText = (option === "block-ytb-entirely" ? 
+    const optionText = (option === BLOCK_YT_OPTION ? 
           "blocking Yt entirely" : "focus mode") + "!";
     instructionText.textContent = "Enjoy " + optionText;
     
@@ -158,6 +171,6 @@ stopBtn.addEventListener("click", async (event) => {
 resetBtn.addEventListener("click", (event) => {
     time.reset();
     timer.textContent = "00:00:00";
-    option = "block-ytb-entirely";
+    option = BLOCK_YT_OPTION;
     Stuff.sendData(time, option);
 });
