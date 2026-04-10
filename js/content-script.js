@@ -4,6 +4,8 @@
 // Initialization
 // ============================================
 
+
+
 // Get data from background script
 //const data = Stuff.getData();
 //const time = new Stuff.Time();
@@ -14,9 +16,14 @@
 const container = document.getElementById("container");
 const text = document.createElement("p");
 
+
 text.textContent = "Random text";
 text.style.fontSize = "4em";
 text.style.backgroundColor = "white";
 
 container.append(text);
 
+
+setInterval(() => {
+    
+}, 1000);

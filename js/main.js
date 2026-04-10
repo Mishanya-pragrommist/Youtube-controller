@@ -82,8 +82,25 @@ function toggleWorkMode(isWorking) {
 
 // Send data to 
 function sendData(currentState) {
-    chrome.runtime.sendMessage({
-        
+    
+    // Pack data into object with numbers
+    const dataToSend = {
+        action: "SEND_DATA", // Command for background
+        payload: {
+            seconds: currentState.seconds,
+            minutes: currentState.minutes,
+            hours: currentState.hours,
+            option: currentState.option === OPTIONS.BLOCK ? 1 : 2
+        }
+    };
+    
+    // Send data
+    chrome.runtime.sendMessage(dataToSend, (response) => {
+        if (chrome.runtime.lastError) {
+            console.warn("Content script is sleeping or killed: ", chrome.runtime.lastError.message);
+            return;
+        }
+        console.log("Content script responded: ", response.status);
     });
 }
 
