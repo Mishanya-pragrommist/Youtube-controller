@@ -85,7 +85,7 @@ function sendData(currentState) {
     
     // Pack data into object with numbers
     const dataToSend = {
-        action: "SEND_DATA", // Command for background
+        action: "START_WORK", // Command for background
         payload: {
             seconds: currentState.seconds,
             minutes: currentState.minutes,
@@ -130,7 +130,7 @@ elements.startBtn.addEventListener("click", (e) => {
     
     // Hide form and show extention working
     toggleWorkMode(true);
-    // Stuff.sendData(currentState);
+    sendData(currentState);
 });
 
 // For STOP button

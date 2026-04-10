@@ -18,6 +18,8 @@
         "scripting"
     ],
     
+    "service_worker": "js/background.js",
+    
     "content_scripts": [
         {
             "js": ["js/content-script.js"], 
