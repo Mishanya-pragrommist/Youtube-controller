@@ -13,18 +13,21 @@ let option;
 // Initialization
 // ============================================
 
-// Get data from background script
-//const data = Stuff.getData();
-//const time = new Stuff.Time();
-//time.setTime(data.time);
-//let option = data.option;
-
 // Just testing
 const container = document.getElementById("container");
 const text = document.createElement("p");
+text.textContent = "Random text";
+text.style.fontSize = "4em";
+text.style.backgroundColor = "white";
+
+container.append(text);
+
+setInterval(() => {
+    text.textContent = Date.now();
+}, 1000);
 
 
-// Listen requests from scripts.js
+// Listen requests from background.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     
     // Synchronize data with scripts.js
@@ -38,7 +41,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             
         sendResponse({ status: "success" });
         
-        console.log("Data received: ", hours, ":", minutes, ":", seconds, ", ", option);
+        console.log("2 Content script received data");
+        console.log("2 Data: ", hours, ":", minutes, ":", seconds, ", ", option);
         // TODO: implement timer working and content blocking
         
     }
@@ -46,12 +50,4 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return true; 
 });
 
-text.textContent = "Random text";
-text.style.fontSize = "4em";
-text.style.backgroundColor = "white";
 
-container.append(text);
-
-setInterval(() => {
-    text.textContent = Date.now();
-}, 1000);

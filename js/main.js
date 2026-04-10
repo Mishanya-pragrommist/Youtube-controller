@@ -97,10 +97,10 @@ function sendData(currentState) {
     // Send data
     chrome.runtime.sendMessage(dataToSend, (response) => {
         if (chrome.runtime.lastError) {
-            console.warn("Content script is sleeping or killed: ", chrome.runtime.lastError.message);
+            console.warn("Background is sleeping or killed: ", chrome.runtime.lastError.message);
             return;
         }
-        console.log("Content script responded: ", response.status);
+        console.log("Background script responded: ", response.status);
     });
 }
 
