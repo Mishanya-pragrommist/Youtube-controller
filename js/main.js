@@ -1,5 +1,3 @@
-import * as Stuff from "./useful-stuff.js";
-
 // ========================================================
 // Constants and options
 // ========================================================
@@ -20,14 +18,15 @@ const elements = {
     optionsBlock: document.querySelector("[options-block]"),
     timeInput: document.querySelector("[time-input]"),
     timer: document.querySelector("[timer-js]"),
-    // Кнопки
+    // Buttons
     startBtn: document.querySelector("[start-btn]"),
     stopBtn: document.querySelector("[stop-btn]"),
     resetBtn: document.querySelector("[reset-btn]"),
-    // Контейнеры
+    // Containers
     timeInputBlock: document.querySelector("[time-input-block]")
 };
 
+// Struct with hours, minutes, seconds and option
 let currentState = {
     hours: 0,
     minutes: 0,
@@ -36,7 +35,7 @@ let currentState = {
 };
 
 // ========================================================
-// Initialization
+// Initialization functions
 // ========================================================
 
 async function init() {
@@ -66,14 +65,14 @@ async function getCurrentTab() {
     return tab;
 }
 
+// If user is not on Youtube, hide form 
+// and show text like "You are not on Youtube"
 function toggleYoutubeWarning(isOnYoutube) {
     elements.warningText.style.display = isOnYoutube ? "none" : "block";
     elements.mainBlock.style.display = isOnYoutube ? "block" : "none";
 }
 
-// Switches visibility of setting form and workmode
-// Переключает видимость между режимом настройки 
-// и режимом работы таймера
+// Switch visibility of setting form and workmode of extention
 function toggleWorkMode(isWorking) {
     elements.stopBtn.style.display = isWorking ? "block" : "none";
     elements.startBtn.style.display = isWorking ? "none" : "block";
@@ -81,46 +80,58 @@ function toggleWorkMode(isWorking) {
     elements.optionsBlock.style.display = isWorking ? "none" : "flex";
 }
 
+// Send data to 
+function sendData(currentState) {
+    chrome.runtime.sendMessage({
+        
+    });
+}
+
 // ========================================================
 // EventListeners
 // ========================================================
 
+// For start button
 elements.startBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    
+    // Get data
     const formData = new FormData(elements.form);
     const [h, m, s] = formData.get("time-input").split(":").map(Number);
     const selectedOption = formData.get("preference");
-
+    // Set data in struct
     currentState = { hours: h || 0, minutes: m || 0, seconds: s || 0, option: selectedOption };
-
-    // Обновляем текст инструкции
+    
+    // Update mode text
     const modeName = selectedOption === OPTIONS.BLOCK ? "blocking Yt entirely" : "focus mode";
     elements.instructionText.textContent = `Enjoy ${modeName}!`;
-
-    // Показываем таймер, если время задано
+    
+    // Show timer if there is time
     if (currentState.hours || currentState.minutes || currentState.seconds) {
         elements.timer.textContent = `${h}:${m}:${s}`;
         elements.timer.style.display = "block";
     }
-
+    
+    // Hide form and show extention working
     toggleWorkMode(true);
     // Stuff.sendData(currentState);
 });
 
+// For STOP button
 elements.stopBtn.addEventListener("click", (e) => {
     e.preventDefault();
     
+    // Show settings form
     toggleWorkMode(false);
     elements.timer.style.display = "none";
     elements.instructionText.textContent = "Choose blocking mode";
 });
 
+// For RESET button
 elements.resetBtn.addEventListener("click", () => {
     elements.form.reset();
     elements.timer.textContent = "00:00:00";
     // Stuff.sendData(null);
 });
 
-// Запуск
+// Start work of the script
 init();

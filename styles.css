@@ -39,6 +39,7 @@ p {
     display: flex;
     justify-content: space-between;
     align-content: center;
+    align-items: center;
     
     border: 2px solid #898989;
     border-radius: 8px;
@@ -84,7 +85,7 @@ input[type="checkbox"], input[type="radio"] {
 
 input[type="time"] {
     font-size: 1.2em;
-    height: auto;
+    height: 2em;
 }
 
 .buttons-row {
@@ -125,7 +126,7 @@ button:hover {
 
 .timer {
     display: none;
-    width: 90%;
+    width: auto;
     height: 150px;
     
     background-color: #FFF67E;
