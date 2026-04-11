@@ -13,18 +13,7 @@ let option;
 
 // Listen requests from scripts.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    
-    
-    if (request.action === "GET_DATA") {
-        sendResponse({
-            seconds: time.seconds,
-            minutes: time.minutes,
-            hours: time.hours,
-            choice: option === BLOCK_YT_OPTION ? 1 : 2
-        });
-    }
-    
-    
+        
     if (request.action === "START_WORK") {
         const payload = request.payload;
         
@@ -38,11 +27,39 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         
         console.log("1 Background received data: ", hours, ":", minutes, ":", seconds, ", ", option);
         
-        // Находим активную вкладку и отправляем сообщение именно в нее
+        // Find active tab and send message there
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0 && tabs[0].id) {
-                // Пересылаем исходный объект request, так как content-script ждет request.action
+                
                 chrome.tabs.sendMessage(tabs[0].id, request, (response) => {
+                    if (chrome.runtime.lastError) {
+                        console.warn("1 Content script error: ", chrome.runtime.lastError.message);
+                        return;
+                    }
+                    console.log("1 Content script responded: ", response.status);
+                });
+            }
+        });
+    }
+    
+    
+    if (request.action === "CONTINUE_WORK") {
+        chrome.runtime.sendMessage(request, (response) => {
+            if (chrome.runtime.lastError) {
+                console.warn("Popup error: ", chrome.runtime.lastError.message);
+                return;
+            }
+            console.log("Popup responded: ", response.status);
+        });
+    }
+        
+    
+    if (request.action === "STOP_WORK") {
+        // Find active tab and send message there
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0 && tabs[0].id) {
+                
+                chrome.tabs.sendMessage(tabs[0].id, {action: "STOP_WORK"}, (response) => {
                     if (chrome.runtime.lastError) {
                         console.warn("1 Content script error: ", chrome.runtime.lastError.message);
                         return;

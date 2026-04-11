@@ -44,6 +44,20 @@ async function init() {
 
     toggleYoutubeWarning(isYoutube);
     
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+        if (request.action === "CONTINUE_WORK") {
+            const payload = request.payload;
+            currentState.hours = payload.h;
+            currentState.minutes = payload.m;
+            currentState.seconds = payload.s;
+            elements.timer.textContent = `${currentState.hours}:${currentState.minutes}:${currentState.seconds}`;
+            elements.timer.style.display = "block";
+            toggleWorkMode(true);
+        }
+        
+        return true;
+    });
+    
     if (isYoutube) {
         setupInitialUI();
     }
@@ -141,13 +155,21 @@ elements.stopBtn.addEventListener("click", (e) => {
     toggleWorkMode(false);
     elements.timer.style.display = "none";
     elements.instructionText.textContent = "Choose blocking mode";
+    
+    chrome.runtime.sendMessage({action: "STOP_WORK"}, (response) => {
+        if (chrome.runtime.lastError) {
+            console.warn("Background is sleeping or killed: ", chrome.runtime.lastError.message);
+            return;
+        }
+        console.log("Background script responded: ", response.status);
+    });
+    
 });
 
 // For RESET button
 elements.resetBtn.addEventListener("click", () => {
     elements.form.reset();
     elements.timer.textContent = "00:00:00";
-    // Stuff.sendData(null);
 });
 
 // Start work of the script
